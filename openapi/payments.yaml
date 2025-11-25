@@ -1,26 +1,29 @@
 openapi: 3.0.0
 info:
   title: Core Payments API
-  version: "1.1.0"
+  version: "2.0.0"
 paths:
   /v1/payments/create:
     post:
-      summary: Create a payment (VAT optional)
+      summary: Create a payment (VAT required for EU)
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required: [amount, currency]
+              required: [amount, currency, region]
               properties:
                 amount:
                   type: number
                 currency:
                   type: string
+                region:
+                  type: string
+                  enum: [US, EU, ROW]
                 vat_code:
                   type: string
-                  description: Optional VAT code for EU merchants
+                  description: Required when region is EU
       responses:
         "200":
           description: Payment created
